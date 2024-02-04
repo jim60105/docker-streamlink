@@ -49,17 +49,19 @@ COPY --link --from=mwader/static-ffmpeg:6.1.1 /ffmpeg /usr/local/bin/
 
 # Copy dist and support arbitrary user ids (OpenShift best practice)
 # https://docs.openshift.com/container-platform/4.14/openshift_images/create-images.html#use-uid_create-images
-COPY --chmod=774 \
+COPY --chmod=775 \
     --from=build /root/.local /root/.local
 ENV PATH="/root/.local/bin:$PATH"
 ENV PYTHONPATH "${PYTHONPATH}:/root/.local/lib/python3.11/site-packages" 
 
+RUN install -d -m 775 -o $UID -g 0 /download
+VOLUME [ "/download" ]
+
 # Remove these to prevent the container from executing arbitrary commands
 RUN rm /bin/echo /bin/ln /bin/rm /bin/sh /bin/bash
 
-USER $UID
 WORKDIR /download
-VOLUME [ "/download" ]
+USER $UID
 
 STOPSIGNAL SIGINT
 ENTRYPOINT [ "streamlink" ]

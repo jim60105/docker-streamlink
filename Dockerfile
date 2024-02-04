@@ -16,13 +16,15 @@ COPY --link --from=mwader/static-ffmpeg:6.1.1 /ffmpeg /usr/bin/
 RUN addgroup -g $UID $UID && \
     adduser -H -g "" -D $UID -u $UID -G $UID
 
+# Run as non-root user
+RUN install -d -m 775 -o $UID -g 0 /download
+VOLUME [ "/download" ]
+
 # Remove these to prevent the container from executing arbitrary commands
 RUN rm /bin/echo /bin/ln /bin/rm /bin/sh
 
-# Run as non-root user
-USER $UID
 WORKDIR /download
-VOLUME [ "/download" ]
+USER $UID
 
 STOPSIGNAL SIGINT
 ENTRYPOINT [ "streamlink" ]
