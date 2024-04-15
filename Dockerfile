@@ -6,7 +6,9 @@ FROM alpine:3 as final
 ARG UID
 
 RUN apk add -u --no-cache \
-    -X "http://dl-cdn.alpinelinux.org/alpine/edge/community" \
+    # These branches follows the latest release
+    -X "https://dl-cdn.alpinelinux.org/alpine/edge/main" \
+    -X "https://dl-cdn.alpinelinux.org/alpine/edge/community" \
     streamlink
 
 # ffmpeg
