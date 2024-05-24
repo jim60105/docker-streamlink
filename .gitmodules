@@ -1,0 +1,3 @@
+[submodule "streamlink"]
+	path = streamlink
+	url = https://github.com/streamlink/streamlink.git

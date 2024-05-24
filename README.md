@@ -12,7 +12,7 @@ Mount the current directory as `/download` and run Streamlink with additional in
 The downloaded files will be saved to where you run the command.
 
 ```bash
-docker run -it -v ".:/download" ghcr.io/jim60105/streamlink --progress force --output "{id}.ts" [options] [url] best
+docker run -it -v ".:/download" ghcr.io/jim60105/streamlink:alpine --progress force --output "{id}.ts" [options] [url] best
 ```
 
 The `[options]`, `[url]` placeholder should be replaced with the options and arguments for Streamlink. Check the [Streamlink README](https://github.com/streamlink/streamlink?tab=readme-ov-file#-quickstart) for more information.
@@ -45,19 +45,19 @@ It is important to note that the [Dockerfile](Dockerfile) always builds with [th
 
 ### Build Command
 
-> [!NOTE]  
-> If you are using an earlier version of the docker client, it is necessary to [enable the BuildKit mode](https://docs.docker.com/build/buildkit/#getting-started) when building the image. This is because I used the `COPY --link` feature which enhances the build performance and was introduced in Buildx v0.8.  
-> With the Docker Engine 23.0 and Docker Desktop 4.19, Buildx has become the default build client. So you won't have to worry about this when using the latest version.
-
 ```bash
 docker build -t streamlink .
-docker build --build-arg BUILD_VERSION=6.5.0 -f ./alpine.Dockerfile -t streamlink:alpine .
-docker build --build-arg BUILD_VERSION=6.5.0 -f ./ubi.Dockerfile -t streamlink:ubi .
-docker build --build-arg BUILD_VERSION=6.5.0 -f ./distroless.Dockerfile -t streamlink:distroless .
+docker build --build-arg BUILD_VERSION=6.7.4 -f ./alpine.Dockerfile -t streamlink:alpine .
+docker build --build-arg BUILD_VERSION=6.7.4 -f ./ubi.Dockerfile -t streamlink:ubi .
+docker build --build-arg BUILD_VERSION=6.7.4 -f ./distroless.Dockerfile -t streamlink:distroless .
 ```
 
 > [!TIP]
 > I've notice that that both the UBI version and the Distroless version offer no advantages over the Alpine version. So _**please use the Alpine version**_ unless you have specific reasons not to. All of these base images are great, some of them were simply not that suitable for our project.
+
+> [!NOTE]  
+> If you are using an earlier version of the docker client, it is necessary to [enable the BuildKit mode](https://docs.docker.com/build/buildkit/#getting-started) when building the image. This is because I used the `COPY --link` feature which enhances the build performance and was introduced in Buildx v0.8.  
+> With the Docker Engine 23.0 and Docker Desktop 4.19, Buildx has become the default build client. So you won't have to worry about this when using the latest version.
 
 ## LICENSE
 
@@ -65,6 +65,16 @@ docker build --build-arg BUILD_VERSION=6.5.0 -f ./distroless.Dockerfile -t strea
 > The main program, [streamlink/streamlink](https://github.com/streamlink/streamlink), is distributed under [BSD-2-Clause license](https://github.com/streamlink/streamlink/blob/master/LICENSE).  
 > Please consult their repository for access to the source code and licenses.  
 > The following is the license for the Dockerfiles and CI workflows in this repository.
+
+<img src="https://github.com/jim60105/docker-streamlink/assets/16995691/2ab416c6-7f51-47d7-a8f3-d2ff38074e8b" alt="gplv3" width="300" />
+
+[GNU GENERAL PUBLIC LICENSE Version 3](LICENSE)
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 > [!CAUTION]
 > A GPLv3 licensed Dockerfile means that you _**MUST**_ **distribute the source code with the same license**, if you
@@ -76,13 +86,3 @@ docker build --build-arg BUILD_VERSION=6.5.0 -f ./distroless.Dockerfile -t strea
 > "Distribute" means to make the image available for other people to download, usually by pushing it to a public registry. If you are solely using it for your personal purposes, this has no impact on you.
 >
 > Please consult the [LICENSE](LICENSE) for more details.
-
-<img src="https://github.com/jim60105/docker-streamlink/assets/16995691/2ab416c6-7f51-47d7-a8f3-d2ff38074e8b" alt="gplv3" width="300" />
-
-[GNU GENERAL PUBLIC LICENSE Version 3](LICENSE)
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.

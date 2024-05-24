@@ -1,4 +1,3 @@
-**/LICENSE
 **/*.md
 **/.hadolint.yml
 **/node_modules
