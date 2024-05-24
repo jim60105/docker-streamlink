@@ -7,6 +7,11 @@ on:
 
   workflow_dispatch:
 
+# Sets the permissions granted to the GITHUB_TOKEN for the actions in this job.
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   docker-alpine:
     runs-on: ubuntu-latest
@@ -14,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup docker
         id: setup
@@ -23,7 +30,6 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
           QUAY_TOKEN: ${{ secrets.QUAY_TOKEN }}
-          CR_PAT: ${{ secrets.CR_PAT }}
           tag: alpine
 
       - name: Build and push
@@ -35,8 +41,15 @@ jobs:
           target: final
           tags: ${{ steps.setup.outputs.tags }}
           labels: ${{ steps.setup.outputs.labels }}
-          build-args: BUILD_VERSION=${{ github.head_ref || github.ref_name }}
+          build-args: |
+            VERSION=${{ github.head_ref || github.ref_name }}
+            RELEASE=${{ github.run_number }}
           platforms: linux/amd64,linux/arm64
+          # Cache to regietry instead of gha to avoid the capacity limit.
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache,mode=max
+          sbom: true
+          provenance: true
 
   docker-ubi:
     runs-on: ubuntu-latest
@@ -44,6 +57,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup docker
         id: setup
@@ -53,7 +68,6 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
           QUAY_TOKEN: ${{ secrets.QUAY_TOKEN }}
-          CR_PAT: ${{ secrets.CR_PAT }}
           tag: ubi
 
       - name: Build and push
@@ -65,8 +79,15 @@ jobs:
           target: final
           tags: ${{ steps.setup.outputs.tags }}
           labels: ${{ steps.setup.outputs.labels }}
-          build-args: BUILD_VERSION=${{ github.head_ref || github.ref_name }}
+          build-args: |
+            VERSION=${{ github.head_ref || github.ref_name }}
+            RELEASE=${{ github.run_number }}
           platforms: linux/amd64,linux/arm64
+          # Cache to regietry instead of gha to avoid the capacity limit.
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache,mode=max
+          sbom: true
+          provenance: true
 
   docker-distroless:
     runs-on: ubuntu-latest
@@ -74,6 +95,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Setup docker
         id: setup
@@ -83,7 +106,6 @@ jobs:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
           QUAY_TOKEN: ${{ secrets.QUAY_TOKEN }}
-          CR_PAT: ${{ secrets.CR_PAT }}
           tag: distroless
 
       - name: Build and push
@@ -95,5 +117,12 @@ jobs:
           target: final
           tags: ${{ steps.setup.outputs.tags }}
           labels: ${{ steps.setup.outputs.labels }}
-          build-args: BUILD_VERSION=${{ github.head_ref || github.ref_name }}
+          build-args: |
+            VERSION=${{ github.head_ref || github.ref_name }}
+            RELEASE=${{ github.run_number }}
           platforms: linux/amd64,linux/arm64
+          # Cache to regietry instead of gha to avoid the capacity limit.
+          cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache
+          cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache,mode=max
+          sbom: true
+          provenance: true
