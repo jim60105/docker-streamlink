@@ -26,7 +26,7 @@ You can find all available tags at [ghcr.io](https://github.com/jim60105/docker-
 This repository contains four Dockerfiles for building Docker images based on different base images:
 
 | Dockerfile                                     | Base Image                                                                                                                         |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | [Dockerfile](Dockerfile)                       | [Alpine official image](https://hub.docker.com/_/alpine/)                                                                          |
 | [alpine.Dockerfile](alpine.Dockerfile)         | [Python official image 3.12-alpine](https://hub.docker.com/_/python/)                                                              |
 | [ubi.Dockerfile](ubi.Dockerfile)               | [Red Hat Universal Base Image 9 Minimal](https://catalog.redhat.com/software/containers/ubi9/ubi-minimal/615bd9b4075b022acc111bf5) |
@@ -47,9 +47,9 @@ It is important to note that the [Dockerfile](Dockerfile) always builds with [th
 
 ```bash
 docker build -t streamlink .
-docker build --build-arg BUILD_VERSION=6.7.4 -f ./alpine.Dockerfile -t streamlink:alpine .
-docker build --build-arg BUILD_VERSION=6.7.4 -f ./ubi.Dockerfile -t streamlink:ubi .
-docker build --build-arg BUILD_VERSION=6.7.4 -f ./distroless.Dockerfile -t streamlink:distroless .
+docker build --build-arg BUILD_VERSION=6.10.0 -f ./alpine.Dockerfile -t streamlink:alpine .
+docker build --build-arg BUILD_VERSION=6.10.0 -f ./ubi.Dockerfile -t streamlink:ubi .
+docker build --build-arg BUILD_VERSION=6.10.0 -f ./distroless.Dockerfile -t streamlink:distroless .
 ```
 
 > [!TIP]
