@@ -42,6 +42,9 @@ ARG PIP_ROOT_USER_ACTION="ignore"
 ARG PIP_NO_COMPILE="true"
 ARG PIP_DISABLE_PIP_VERSION_CHECK="true"
 
+# Ensure the cache is not reused when installing streamlink
+ARG RELEASE
+
 ARG VERSION
 RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
     pip3.11 install -U --force-reinstall pip setuptools wheel && \
