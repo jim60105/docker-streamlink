@@ -28,9 +28,9 @@ COPY --link --chown=$UID:0 --chmod=775 streamlink/LICENSE /licenses/streamlink.L
 ARG RELEASE
 
 RUN --mount=type=cache,id=apk-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/var/cache/apk \
-    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.0-1,source=/ffmpeg,target=/ffmpeg,rw \
-    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.0-1,source=/ffprobe,target=/ffprobe,rw \
-    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.0-1,source=/dumb-init,target=/dumb-init,rw \
+    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.1,source=/ffmpeg,target=/ffmpeg,rw \
+    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.1,source=/ffprobe,target=/ffprobe,rw \
+    --mount=from=ghcr.io/jim60105/static-ffmpeg-upx:7.1,source=/dumb-init,target=/dumb-init,rw \
     apk update && apk add -u \
     # These branches follows the streamlink release
     -X "https://dl-cdn.alpinelinux.org/alpine/edge/main" \
