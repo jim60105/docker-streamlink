@@ -1,12 +1,16 @@
 {
     "cSpell.words": [
+        "adduser",
         "Buildx",
         "distroless",
         "Dockerfiles",
+        "ffprobe",
         "gplv",
         "Jarek",
         "Potiuk",
+        "pycache",
         "Sena",
+        "setuptools",
         "Streamlink",
         "Virtualenv"
     ]
