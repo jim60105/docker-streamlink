@@ -13,6 +13,8 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
+  attestations: write
 
 jobs:
   docker-latest:
@@ -35,6 +37,7 @@ jobs:
           tag: latest
 
       - name: Build and push
+        id: build_push_latest
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -52,3 +55,21 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/streamlink:cache,mode=max
           sbom: true
           provenance: true
+
+      - name: Attest GHCR image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/streamlink
+          subject-digest: ${{ steps.build_push_latest.outputs.digest }}
+
+      - name: Attest Docker Hub image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/streamlink
+          subject-digest: ${{ steps.build_push_latest.outputs.digest }}
+
+      - name: Attest Quay image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: quay.io/${{ github.repository_owner }}/streamlink
+          subject-digest: ${{ steps.build_push_latest.outputs.digest }}
